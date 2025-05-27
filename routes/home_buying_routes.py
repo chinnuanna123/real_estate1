@@ -1,14 +1,17 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any # Import Any for **kwargs
+
 from agents.home_buying_agent import HomeBuyingAgent
 from modules.preference_manager import load_preferences, save_preferences
 from utils.llm_connector import LLMConnector
-import os
+import os # Ensure os is imported
 
 # Initialize LLMConnector globally or pass it around
-llm_connector = LLMConnector(api_key=os.getenv("GEMINI_API_KEY", ""))
-home_buying_agent = HomeBuyingAgent(llm_connector)
+# --- THIS LINE IS CRITICAL - CHANGED TO USE OPENAI_API_KEY AND llm_provider="openai" ---
+llm_connector = LLMConnector(api_key=os.getenv("OPENAI_API_KEY", ""), llm_provider="openai") 
+
+home_buying_agent: HomeBuyingAgent = HomeBuyingAgent(llm_connector) 
 
 router = APIRouter()
 
@@ -22,7 +25,8 @@ class ProcessQueryRequest(BaseModel):
     credit_score: Optional[int] = None
     down_payment: Optional[float] = None
     loan_amount: Optional[float] = None
-    property_type: Optional[str] = None # Renamed from general 'property_type' to avoid conflict if already exists
+    property_type: Optional[str] = None
+    chat_history: Optional[List[Dict[str, str]]] = None # Ensure this is present for chatbot
 
 class PreferenceRequest(BaseModel):
     user_id: str
@@ -42,8 +46,9 @@ async def process_user_query(request: ProcessQueryRequest):
         # Use .pop() to remove them from request_data, so they are not passed via **request_data
         user_id = request_data.pop('user_id')
         query = request_data.pop('query')
-        property_details = request_data.pop('property_details', None) # Use .pop with default to handle Optional fields not sent
+        property_details = request_data.pop('property_details', None) # Use .pop with default to handle Optional fields
         target_price = request_data.pop('target_negotiation_price', None) # Use .pop with default
+        chat_history = request_data.pop('chat_history', None) # Ensure chat_history is popped
 
         # Pass the extracted explicit parameters, and then unpack the remaining kwargs
         response_data = await home_buying_agent.process_request(
@@ -51,6 +56,7 @@ async def process_user_query(request: ProcessQueryRequest):
             query=query,
             property_details=property_details,
             target_price=target_price,
+            chat_history=chat_history, # Pass chat_history explicitly
             **request_data # Pass remaining fields (income, credit_score, etc.) as kwargs
         )
         return {"status": "success", "data": response_data}

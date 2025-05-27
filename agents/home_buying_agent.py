@@ -5,7 +5,7 @@ from modules.mortgage_recommendation import MortgageRecommender
 from modules.neighborhood_insights import NeighborhoodAnalyzer
 from modules.marketing_description import MarketingContentGenerator
 from utils.llm_connector import LLMConnector
-from typing import Optional, Dict, Any # Import necessary types
+from typing import Optional, Dict, Any, List # Import List for chat_history
 
 class HomeBuyingAgent:
     """
@@ -21,12 +21,20 @@ class HomeBuyingAgent:
         self.marketing_generator = MarketingContentGenerator(llm_connector)
         self.llm_connector = llm_connector # For intent recognition
 
-    async def _determine_intent(self, query: str) -> str:
+    async def _determine_intent(self, query: str, chat_history: Optional[List[Dict[str, str]]] = None) -> str:
         """
-        Uses LLM to determine the user's primary intent from a natural language query.
-        This method is only called if the query is NOT a direct intent keyword.
+        Uses LLM to determine the user's primary intent from a natural language query
+        in the context of chat history.
         """
-        prompt = f"""Analyze the following user query and identify the primary intent.
+        # Prepare messages for LLM API call, including chat history
+        messages = []
+        if chat_history:
+            for msg in chat_history:
+                # Assuming chat_history is in {'role': 'user'/'agent', 'text': '...'} format
+                messages.append({"role": msg["role"], "parts": [{"text": msg["text"]}]})
+        
+        # Add the current query for intent detection
+        messages.append({"role": "user", "parts": [{"text": f"""Analyze the following user query and identify the primary intent.
         Respond with one of these keywords:
         - SEARCH_PROPERTY
         - NEGOTIATE
@@ -37,8 +45,11 @@ class HomeBuyingAgent:
         - UNKNOWN
 
         Query: "{query}"
-        Intent:"""
-        intent = await self.llm_connector.call_llm_api(prompt)
+        Intent:"""}]})
+
+        # Pass the full messages list to the LLM connector
+        # Assuming llm_connector.call_llm_api is updated to accept 'messages'
+        intent = await self.llm_connector.call_llm_api(messages=messages) 
         return intent.strip().upper() if intent else "UNKNOWN"
 
     async def process_request(self, 
@@ -46,7 +57,8 @@ class HomeBuyingAgent:
                               query: str, 
                               property_details: Optional[Dict] = None, 
                               target_price: Optional[str] = None, 
-                              **kwargs: Any) -> Dict: # Added **kwargs to capture additional parameters
+                              chat_history: Optional[List[Dict[str, str]]] = None, # Added chat_history to signature
+                              **kwargs: Any) -> Dict:
         """
         Processes a user request by determining intent and calling the appropriate module.
         Prioritizes direct intent keywords sent from the frontend.
@@ -56,6 +68,7 @@ class HomeBuyingAgent:
             query (str): The user's natural language query or a direct intent keyword.
             property_details (dict, optional): Details of a selected property, if relevant to the query.
             target_price (str, optional): Target price for negotiation, if relevant.
+            chat_history (list, optional): List of previous chat messages for conversational context.
             **kwargs: Additional parameters (e.g., income, credit_score for mortgage, passed from frontend).
 
         Returns:
@@ -79,14 +92,14 @@ class HomeBuyingAgent:
             intent = "MARKETING_DESCRIPTION"
         else:
             # --- Fallback to LLM for Natural Language Intent Recognition ---
-            # Pass original query to LLM, as it expects natural language
-            intent = await self._determine_intent(query) 
+            # Pass original query AND chat_history to _determine_intent for conversational context
+            intent = await self._determine_intent(query, chat_history) 
 
-        print(f"User intent detected: {intent} for query: '{query}'")
+        print(f"User intent detected: {intent} for query: '{query}'") # This log will confirm the intent
 
         if intent == "SEARCH_PROPERTY":
             return await self.property_search.search_properties(query)
-        elif intent == "NEGOTIATE": # Parameters are checked in the direct match or in the module
+        elif intent == "NEGOTIATE":
             if property_details and target_price:
                 result = await self.negotiation_assistant.simulate_negotiation(property_details, target_price)
                 return {"type": "negotiation_result", "data": result}
@@ -101,17 +114,17 @@ class HomeBuyingAgent:
             credit_score = kwargs.get('credit_score')
             down_payment = kwargs.get('down_payment')
             loan_amount = kwargs.get('loan_amount')
-            property_type_arg = kwargs.get('property_type') # Renamed to avoid conflict with function param if any
+            property_type_arg = kwargs.get('property_type') 
 
             if all(p is not None for p in [income, credit_score, down_payment, loan_amount, property_type_arg]):
                 result = await self.mortgage_recommender.get_mortgage_recommendations(
-                    income=float(income), # Ensure type conversion as values might come as Any
+                    income=float(income), 
                     credit_score=int(credit_score),
                     down_payment=float(down_payment),
                     loan_amount=float(loan_amount),
                     property_type=str(property_type_arg)
                 )
-                return {"type": "mortgage_recommendation", "data": result}
+                return {"type": "mortgage_recommendation", "data": result} 
             else:
                 print(f"Warning: Missing parameters for MORTGAGE_RECOMMENDATION. Received: {kwargs}")
                 return {"type": "error", "message": "Missing financial details for mortgage recommendation."}
@@ -131,4 +144,3 @@ class HomeBuyingAgent:
             # Default to property search if intent is UNKNOWN or parameters are missing for specific intents
             print(f"Intent '{intent}' not fully matched or parameters missing. Defaulting to property search.")
             return await self.property_search.search_properties(query)
-

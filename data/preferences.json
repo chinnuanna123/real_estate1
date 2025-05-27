@@ -1,18 +1,42 @@
 {
     "cf71d62c-5388-4cdd-b5de-f4e5ee9f89e3": {
-        "homePreferences": "Find me a 3 bhk in Kodigehalli ,Bangalore for 70 lakhs",
+        "homePreferences": "Find me a 2 bhk in hoodi ,Bangalore for 70 lakhs",
         "lastSearchResults": [
             {
                 "id": "gs_1",
-                "name": "Flats for Resale in Hiland Landmark, Devanahalli Int Airport Bangalore",
-                "location": "Hiland Landmark, Devanahalli Int Airport Bangalore",
-                "price": "\u20b912.72 Lakh",
+                "name": "Cooke Town, Bangalore: Map, Property Rates, Projects, Photos ...",
+                "location": "this locality and accounts for approximate 54",
+                "price": "\u20b93",
+                "bedrooms": 3,
+                "bathrooms": 0,
+                "areaSqFt": 0,
+                "description": "3 BHK is the most common room configuration in this locality and accounts for approximate 54% of all the properties for Sale. 86% of the properties in Cooke\u00a0...",
+                "imageUrl": "https://placehold.co/400x300/E0F2F7/000000?text=Google+Search+1",
+                "link": "https://www.magicbricks.com/Cooke-Town-in-Bangalore-Overview"
+            },
+            {
+                "id": "gs_2",
+                "name": "Duplex House for sale in Mysore Road, Bangalore",
+                "location": "Mysore Road, Bangalore",
+                "price": "\u20b912",
+                "bedrooms": 2,
+                "bathrooms": 0,
+                "areaSqFt": 0,
+                "description": "... 2 Bedroom Duplex House in Rajarajeshwari Nagar, Bangalore. JANAPRIYA ABODES. Resale ... The property is owned under freehold contract. The plot is available\u00a0...",
+                "imageUrl": "https://placehold.co/400x300/E0F2F7/000000?text=Google+Search+2",
+                "link": "https://www.99acres.com/duplex-house-in-mysore-road-bangalore-west-ffid"
+            },
+            {
+                "id": "gs_3",
+                "name": "Top new, developing areas of Bangalore for investment",
+                "location": "Simulate negotiation for 2 BHK Flats for Sale in Brookefield Bangalore under 70 Lakhs",
+                "price": "\u20b980.00 Lakh",
                 "bedrooms": 0,
                 "bathrooms": 0,
                 "areaSqFt": 0,
-                "description": "Expected possession of property by 2028. The property belongs to owner through co-Operative society ownership. This residential plot is all yours for 12.72 lac.",
-                "imageUrl": "https://placehold.co/400x300/E0F2F7/000000?text=Google+Search+1",
-                "link": "https://www.99acres.com/hiland-landmark-resale-in-devanahalli-int-airport-bangalore-north-36426-npffid?building_id=36426&transact_type=1"
+                "description": "Feb 9, 2016 ... Vartur and Whitefield are good areas to invest for a budget of Rs 70-80 lakh as a number of projects are coming up here which will be ready for possession in\u00a0...",
+                "imageUrl": "https://placehold.co/400x300/E0F2F7/000000?text=Google+Search+3",
+                "link": "https://www.magicbricks.com/blog/top-new-developing-areas-of-bangalore-for-investment/84495.html"
             }
         ]
     }
