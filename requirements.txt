@@ -1,0 +1,11 @@
+fastapi==0.111.0
+uvicorn==0.30.1
+python-dotenv==1.0.1
+requests==2.32.3
+openai
+langchain>=0.1.16
+tavily-python
+playwright 
+beautifulsoup4
+langchain-community
+langchain-openai

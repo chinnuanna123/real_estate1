@@ -1,0 +1,40 @@
+{
+    "3cac8592-2997-4f06-baaa-29821d32966f": [],
+    "cf71d62c-5388-4cdd-b5de-f4e5ee9f89e3": [
+        {
+            "id": "property_1",
+            "name": "House  In Ayyappa Nagar Main Road, Bangalore : 32+ Independent House  In Ayyappa Nagar Main Road",
+            "location": "Abbigere, Bangalore",
+            "price": "\u20b92.20 Cr",
+            "bedrooms": 1,
+            "bathrooms": 2,
+            "areaSqFt": 2200,
+            "description": "This is a property in Abbigere, Bangalore. It offers a carpet area of 2200 sq ft and is ready to move and furnished. It features located on the 1 out of 1 floor and 1 bathroom. The property is priced at Price not available and is available on a resale basis.",
+            "imageUrl": "https://placehold.co/400x300/E0F2F7/000000?text=Property+1",
+            "link": "https://www.magicbricks.com/independent-house-for-sale-in-ayyappa-nagar-main-road-bangalore-pppfs",
+            "property_type": "House",
+            "selected_at": "2025-06-11T15:27:02.325638",
+            "selection_id": "sel_2_1749635822",
+            "user_notes": "",
+            "status": "rejected",
+            "updated_at": "2025-06-11T15:54:26.844629"
+        },
+        {
+            "id": "property_2",
+            "name": "2 Bhk Flats In Kr Puram, Bangalore: 249+ 2 Bhk Flats  In Kr Puram",
+            "location": "Budigere Cross, Bangalore",
+            "price": "\u20b91.70 Cr",
+            "bedrooms": 2,
+            "bathrooms": 2,
+            "areaSqFt": 1348,
+            "description": "This is a property in Budigere Cross, Bangalore. It offers a carpet area of 1348 sq ft and is ready to move and furnished. It features located on the 2 out of 5 floor, 2 bathrooms and 3 balconyies. The property is priced at Price not available and is available on a resale basis.",
+            "imageUrl": "https://placehold.co/400x300/E0F2F7/000000?text=Property+2",
+            "link": "https://www.magicbricks.com/2-bhk-flats-in-k-r-puram-bangalore-for-sale-pppfs",
+            "property_type": "Flat",
+            "selected_at": "2025-06-11T15:54:44.805484",
+            "selection_id": "sel_2_1749637484",
+            "user_notes": "",
+            "status": "interested"
+        }
+    ]
+}
